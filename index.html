@@ -1,1 +1,862 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>I WORK GENESIS — CRM Restaurantes Barranquilla</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:       #04060f;
+  --panel:    #090d1e;
+  --border:   #131a33;
+  --accent:   #1470ff;
+  --gold:     #ffb800;
+  --red:      #ff3b3b;
+  --green:    #00e676;
+  --yellow:   #ffcc00;
+  --text:     #d8e0f5;
+  --muted:    #5a6a90;
+  --card:     #0b1128;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background: linear-gradient(90deg, #060c20 0%, #0b1535 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  color: var(--gold);
+  letter-spacing: 3px;
+}
+.brand-sub { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+.badge-live {
+  background: rgba(0,230,118,0.12);
+  border: 1px solid var(--green);
+  color: var(--green);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  display: flex; align-items: center; gap: 6px;
+}
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 1.4s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* ── STATS ROW ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 24px 32px 0;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+.stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 42px; line-height: 1; }
+.stat-label { font-size: 12px; color: var(--muted); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+
+/* ── MAIN LAYOUT ── */
+.main { padding: 24px 32px 48px; }
+
+.section-title {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── LEAD CARDS ── */
+.leads-grid { display: flex; flex-direction: column; gap: 16px; }
+
+.lead-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color .2s, box-shadow .2s;
+}
+.lead-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 24px rgba(20,112,255,0.12);
+}
+.lead-card.hot  { border-left: 3px solid var(--red); }
+.lead-card.warm { border-left: 3px solid var(--yellow); }
+
+.card-header {
+  padding: 20px 24px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.card-left { flex: 1; }
+.card-rank {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.card-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.card-address {
+  font-size: 13px;
+  color: var(--muted);
+}
+.pain-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  margin-top: 8px;
+  margin-right: 6px;
+}
+.pain-tag.no-web  { background: rgba(255,59,59,.12); color: var(--red); border: 1px solid rgba(255,59,59,.3); }
+.pain-tag.no-menu { background: rgba(255,184,0,.12); color: var(--gold); border: 1px solid rgba(255,184,0,.3); }
+.pain-tag.no-res  { background: rgba(20,112,255,.12); color: #5599ff; border: 1px solid rgba(20,112,255,.3); }
+
+.card-right { text-align: right; flex-shrink: 0; }
+.score-circle {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  margin-left: auto;
+  margin-bottom: 6px;
+}
+.score-hot  { background: rgba(255,59,59,.15);  border: 2px solid var(--red);    color: var(--red); }
+.score-warm { background: rgba(255,204,0,.15);  border: 2px solid var(--yellow); color: var(--yellow); }
+.score-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── CARD BODY ── */
+.card-body {
+  padding: 0 24px 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+.info-block label {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 5px;
+  font-family: 'DM Mono', monospace;
+}
+.info-block .value {
+  font-size: 15px;
+  color: var(--text);
+  font-weight: 500;
+}
+.info-block .value.na { color: var(--muted); font-style: italic; font-size: 13px; }
+
+/* ── MESSAGE ACCORDION ── */
+.msg-accordion {
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+.msg-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background .15s;
+}
+.msg-toggle:hover { background: rgba(20,112,255,.06); }
+.msg-toggle .chevron { transition: transform .2s; font-size: 16px; color: var(--muted); }
+.msg-toggle.open .chevron { transform: rotate(180deg); }
+
+.msg-content {
+  display: none;
+  padding: 0 24px 20px;
+  flex-direction: column;
+  gap: 14px;
+}
+.msg-content.open { display: flex; }
+
+.msg-block {
+  background: rgba(9, 13, 30, 0.8);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.msg-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+  font-family: 'DM Mono', monospace;
+}
+.msg-text {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #b0c0e0;
+  white-space: pre-line;
+}
+.msg-text em { color: var(--gold); font-style: normal; }
+
+/* ── ACTION BUTTONS ── */
+.card-actions {
+  padding: 0 24px 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: opacity .15s, transform .1s;
+}
+.btn:hover { opacity: .85; transform: translateY(-1px); }
+.btn-wa  { background: #25D366; color: #fff; }
+.btn-copy { background: rgba(20,112,255,.18); color: var(--accent); border: 1px solid rgba(20,112,255,.35); }
+.btn-copy.copied { background: rgba(0,230,118,.15); color: var(--green); border-color: var(--green); }
+.btn-status { background: var(--border); color: var(--muted); font-size: 12px; }
+
+/* ── STATUS SELECTOR ── */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all .15s;
+}
+.status-new      { background: rgba(20,112,255,.1);   border-color: var(--accent);   color: var(--accent); }
+.status-contacted { background: rgba(255,184,0,.1);   border-color: var(--gold);     color: var(--gold); }
+.status-replied  { background: rgba(0,230,118,.1);    border-color: var(--green);    color: var(--green); }
+.status-closed   { background: rgba(0,230,118,.25);   border-color: var(--green);    color: var(--green); }
+.status-lost     { background: rgba(255,59,59,.1);    border-color: var(--red);      color: var(--red); }
+
+/* ── NOTES ── */
+.notes-area {
+  width: 100%;
+  background: rgba(4,6,15,.8);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  padding: 10px 14px;
+  resize: vertical;
+  min-height: 60px;
+  outline: none;
+  transition: border-color .2s;
+}
+.notes-area:focus { border-color: var(--accent); }
+.notes-area::placeholder { color: var(--muted); }
+
+/* ── FOOTER ── */
+.crm-footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 1px;
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="brand">
+    <div>
+      <div class="brand-logo">I WORK GENESIS</div>
+      <div class="brand-sub">CRM · Restaurantes Barranquilla · Sector Leads</div>
+    </div>
+  </div>
+  <div class="badge-live">
+    <span class="dot"></span>
+    PANEL ACTIVO — FEB 2026
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--red)">6</div>
+    <div class="stat-label">Total Leads Identificados</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--red)">3</div>
+    <div class="stat-label">🔴 Leads Calientes (Atacar HOY)</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--yellow)">3</div>
+    <div class="stat-label">🟡 Leads Tibios (Esta semana)</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--gold)">0</div>
+    <div class="stat-label">✅ Cerrados</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- HOT LEADS -->
+  <div class="section-title">🔴 LEADS CALIENTES — CONTACTAR HOY</div>
+  <div class="leads-grid" id="leads">
+
+    <!-- LEAD 1: LOS HELECHOS -->
+    <div class="lead-card hot" id="card-1">
+      <div class="card-header">
+        <div class="card-left">
+          <div class="card-rank"># 01 · LEAD PRIORITARIO</div>
+          <div class="card-name">Restaurante Los Helechos</div>
+          <div class="card-address">📍 Cra. 64 #81b-42, Riomar, Barranquilla · ⭐ 4.6 (1,552 reseñas)</div>
+          <div style="margin-top:10px">
+            <span class="pain-tag no-web">❌ Sin sitio web</span>
+            <span class="pain-tag no-menu">❌ Sin menú digital</span>
+            <span class="pain-tag no-res">❌ Sin reservas auto</span>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="score-circle score-hot">10</div>
+          <div class="score-label">Dolor</div>
+          <div style="margin-top:8px">
+            <select class="status-pill status-new" onchange="updateStatus(this,1)" style="background:transparent;border:none;cursor:pointer;font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">
+              <option value="new">🔵 Nuevo</option>
+              <option value="contacted">🟡 Contactado</option>
+              <option value="replied">💬 Respondió</option>
+              <option value="closed">✅ Cerrado</option>
+              <option value="lost">❌ Perdido</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="info-block">
+          <label>📱 WhatsApp</label>
+          <div class="value">+57 317 437 4189</div>
+        </div>
+        <div class="info-block">
+          <label>📧 Email</label>
+          <div class="value na">No registrado públicamente</div>
+        </div>
+        <div class="info-block">
+          <label>📸 Instagram</label>
+          <div class="value">@restauranteloshelechos</div>
+        </div>
+        <div class="info-block">
+          <label>⏰ Horario</label>
+          <div class="value">Lun–Dom 11am – 4:30pm</div>
+        </div>
+        <div class="info-block">
+          <label>💀 Dolor Principal</label>
+          <div class="value">1,552 clientes. 0 reservas online.</div>
+        </div>
+        <div class="info-block">
+          <label>📊 Reviews negativas</label>
+          <div class="value">"Servicio lento" · "Meseros rudos"</div>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <a class="btn btn-wa" href="https://wa.me/573174374189?text=Buenas%20tardes%20%F0%9F%91%8B%2C%20vi%20que%20Los%20Helechos%20tiene%20m%C3%A1s%20de%201%2C500%20rese%C3%B1as%20positivas%20en%20Google%20%E2%80%94%20eso%20es%20incre%C3%ADble.%20Le%20escribo%20porque%20detect%C3%A9%20que%20actualmente%20no%20tienen%20sistema%20para%20reservar%20mesa%20de%20forma%20autom%C3%A1tica%20ni%20men%C3%BA%20digital%20en%20WhatsApp.%20%C2%BFSabe%20cu%C3%A1ntas%20reservas%20pierde%20cada%20noche%20cuando%20nadie%20puede%20contactarlos%20despu%C3%A9s%20de%20las%208pm%3F%20Trabajo%20con%20I%20WORK%20GENESIS%20%E2%80%94%20empleados%20digitales%20que%20atienden%20a%20sus%20clientes%2024%2F7%20por%20WhatsApp%3A%20muestran%20el%20men%C3%BA%2C%20reservan%20mesas%20y%20confirman%20la%20cita.%20Sin%20contratar%20a%20nadie.%20%C2%BFLe%20puedo%20mostrar%20en%203%20minutos%20c%C3%B3mo%20funciona%3F%20%F0%9F%8E%AF" target="_blank">
+          📲 Abrir WhatsApp
+        </a>
+        <button class="btn btn-copy" onclick="copyMsg(this, 'msg1')">📋 Copiar Mensaje Apertura</button>
+        <button class="btn btn-copy" onclick="copyMsg(this, 'close1')">🔒 Copiar Mensaje Cierre</button>
+      </div>
+
+      <div class="msg-accordion">
+        <button class="msg-toggle" onclick="toggleMsg(this)">
+          Ver guión completo de conversación
+          <span class="chevron">▾</span>
+        </button>
+        <div class="msg-content">
+          <div class="msg-block">
+            <div class="msg-label">📩 MENSAJE 1 — APERTURA (Agente toca la puerta)</div>
+            <div class="msg-text" id="msg1">Buenas tardes 👋, vi que <em>Los Helechos</em> tiene más de 1,500 reseñas positivas en Google — eso es increíble.
+
+Le escribo porque detecté que actualmente no tienen sistema para reservar mesa de forma automática ni menú digital en WhatsApp.
+
+¿Sabe cuántas reservas pierde cada noche cuando nadie puede contactarlos después de las 8pm?
+
+Trabajo con <em>I WORK GENESIS</em> — empleados digitales que atienden a sus clientes 24/7 por WhatsApp: muestran el menú, reservan mesas y confirman la cita. Sin contratar a nadie más.
+
+¿Le puedo mostrar en 3 minutos cómo funciona? 🎯</div>
+          </div>
+          <div class="msg-block">
+            <div class="msg-label">📩 MENSAJE 2 — SEGUIMIENTO (Si no responde en 24h)</div>
+            <div class="msg-text">Hola de nuevo 👋 — sé que el día a día de un restaurante es intenso.
+
+Solo quería recordarle que anoche, mientras Los Helechos estaba cerrado, probablemente hubo clientes que buscaron reservar para hoy... y no encontraron cómo hacerlo.
+
+Con <em>I WORK GENESIS</em> eso no vuelve a pasar. ¿10 minutos esta semana para verlo en pantalla? 📲</div>
+          </div>
+          <div class="msg-block">
+            <div class="msg-label">🔒 MENSAJE 3 — CIERRE (Tú lo cierras)</div>
+            <div class="msg-text" id="close1">Le resumo en concreto lo que tiene <em>Los Helechos</em> desde el primer día:
+
+✅ Agente WhatsApp activo 24/7 — reservas incluso a las 2am
+✅ Menú digital interactivo actualizable en tiempo real
+✅ Recordatorios automáticos que reducen los no-shows
+✅ Respuestas a preguntas frecuentes sin levantar un dedo
+
+El valor de implementación es menor a lo que pierde en <em>una sola noche</em> sin reservas confirmadas.
+
+¿Arrancamos esta semana? Le tengo el agente activo en <em>48 horas</em>. 🚀</div>
+          </div>
+          <textarea class="notes-area" placeholder="📝 Notas del lead (respuestas, observaciones, próxima acción)..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEAD 2: EL VENADO DE ORO -->
+    <div class="lead-card hot" id="card-2">
+      <div class="card-header">
+        <div class="card-left">
+          <div class="card-rank"># 02 · LEAD PRIORITARIO</div>
+          <div class="card-name">Restaurante El Venado de Oro</div>
+          <div class="card-address">📍 Cl. 41 #22-96, Sur Oriente, Barranquilla · ⭐ 4.6 (597 reseñas)</div>
+          <div style="margin-top:10px">
+            <span class="pain-tag no-web">❌ Sin sitio web activo</span>
+            <span class="pain-tag no-menu">❌ Sin menú digital</span>
+            <span class="pain-tag no-res">❌ Sin reservas auto</span>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="score-circle score-hot">10</div>
+          <div class="score-label">Dolor</div>
+          <div style="margin-top:8px">
+            <select class="status-pill status-new" onchange="updateStatus(this,2)" style="background:transparent;border:none;cursor:pointer;font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">
+              <option value="new">🔵 Nuevo</option>
+              <option value="contacted">🟡 Contactado</option>
+              <option value="replied">💬 Respondió</option>
+              <option value="closed">✅ Cerrado</option>
+              <option value="lost">❌ Perdido</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-block">
+          <label>📱 WhatsApp Principal</label>
+          <div class="value">+57 315 506 7777</div>
+        </div>
+        <div class="info-block">
+          <label>📱 WhatsApp Alt.</label>
+          <div class="value">+57 315 925 0911</div>
+        </div>
+        <div class="info-block">
+          <label>📧 Email</label>
+          <div class="value na">No registrado</div>
+        </div>
+        <div class="info-block">
+          <label>⏰ Horario</label>
+          <div class="value">Lun–Vie 10:30am–4pm · Sáb–Dom 9am–5:30pm</div>
+        </div>
+        <div class="info-block">
+          <label>💀 Dolor Principal</label>
+          <div class="value">Zona sur sin digitalizar. Blog abandonado.</div>
+        </div>
+        <div class="info-block">
+          <label>🎯 Oportunidad</label>
+          <div class="value">Primer restaurante digital del sur de Baq.</div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a class="btn btn-wa" href="https://wa.me/573155067777?text=Buenas%20tardes%20%F0%9F%91%8B%2C%20vi%20que%20El%20Venado%20de%20Oro%20tiene%20casi%20600%20rese%C3%B1as%20positivas%20en%20Google%20%E2%80%94%20excelente%20reputaci%C3%B3n.%20Le%20escribo%20porque%20detect%C3%A9%20que%20actualmente%20no%20tienen%20sistema%20para%20reservar%20mesa%20de%20forma%20autom%C3%A1tica%20ni%20men%C3%BA%20digital.%20Con%20I%20WORK%20GENESIS%2C%20su%20restaurante%20podr%C3%ADa%20ser%20el%20primero%20en%20la%20zona%20sur%20con%20un%20empleado%20digital%20que%20atiende%2024%2F7.%20%C2%BFLe%20muestro%20c%C3%B3mo%20funciona%20en%203%20minutos%3F%20%F0%9F%8E%AF" target="_blank">
+          📲 Abrir WhatsApp
+        </a>
+        <button class="btn btn-copy" onclick="copyMsg(this, 'msg2')">📋 Copiar Mensaje Apertura</button>
+        <button class="btn btn-copy" onclick="copyMsg(this, 'close2')">🔒 Copiar Mensaje Cierre</button>
+      </div>
+      <div class="msg-accordion">
+        <button class="msg-toggle" onclick="toggleMsg(this)">
+          Ver guión completo de conversación
+          <span class="chevron">▾</span>
+        </button>
+        <div class="msg-content">
+          <div class="msg-block">
+            <div class="msg-label">📩 MENSAJE 1 — APERTURA</div>
+            <div class="msg-text" id="msg2">Buenas tardes 👋, vi que <em>El Venado de Oro</em> tiene casi 600 reseñas positivas en Google — eso habla muy bien del restaurante.
+
+Le escribo porque detecté que actualmente no tienen sistema para reservar mesa de forma automática ni menú digital en WhatsApp.
+
+Lo más interesante: en la zona sur de Barranquilla, <em>ningún restaurante lo tiene todavía</em>.
+
+Con <em>I WORK GENESIS</em>, El Venado de Oro sería el primero — ventaja competitiva enorme. Su agente digital atiende clientes 24/7, muestra el menú, toma reservas y confirma asistencia.
+
+¿Le puedo mostrar en 3 minutos cómo funciona? 🎯</div>
+          </div>
+          <div class="msg-block">
+            <div class="msg-label">🔒 MENSAJE CIERRE</div>
+            <div class="msg-text" id="close2">Le resumo en concreto lo que tiene <em>El Venado de Oro</em> desde el primer día:
+
+✅ Agente WhatsApp activo 24/7
+✅ Menú digital interactivo con fotos y precios
+✅ Reservas automáticas con confirmación al cliente
+✅ Primer restaurante de la zona sur totalmente digitalizado
+
+Su competencia aún no tiene esto. <em>El que llegue primero se queda con los clientes digitales.</em>
+
+¿Arrancamos esta semana? Activación en <em>48 horas</em>. 🚀</div>
+          </div>
+          <textarea class="notes-area" placeholder="📝 Notas del lead..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEAD 3: LA TERRAZA DE LA CASA -->
+    <div class="lead-card hot" id="card-3">
+      <div class="card-header">
+        <div class="card-left">
+          <div class="card-rank"># 03 · LEAD PRIORITARIO</div>
+          <div class="card-name">La Terraza de la Casa</div>
+          <div class="card-address">📍 Cra. 53 #85-77, Riomar, Barranquilla · ⭐ 4.5 (294 reseñas)</div>
+          <div style="margin-top:10px">
+            <span class="pain-tag no-web">❌ Sin sitio web</span>
+            <span class="pain-tag no-menu">❌ Solo teléfono fijo</span>
+            <span class="pain-tag no-res">❌ Atención manual</span>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="score-circle score-hot">9</div>
+          <div class="score-label">Dolor</div>
+          <div style="margin-top:8px">
+            <select class="status-pill status-new" onchange="updateStatus(this,3)" style="background:transparent;border:none;cursor:pointer;font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">
+              <option value="new">🔵 Nuevo</option>
+              <option value="contacted">🟡 Contactado</option>
+              <option value="replied">💬 Respondió</option>
+              <option value="closed">✅ Cerrado</option>
+              <option value="lost">❌ Perdido</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-block">
+          <label>☎️ Teléfono Fijo</label>
+          <div class="value">+57 605 357 1992</div>
+        </div>
+        <div class="info-block">
+          <label>📱 WhatsApp</label>
+          <div class="value na">⚠️ No encontrado — llamar al fijo</div>
+        </div>
+        <div class="info-block">
+          <label>📧 Email</label>
+          <div class="value na">No registrado</div>
+        </div>
+        <div class="info-block">
+          <label>⏰ Horario</label>
+          <div class="value">Lun–Dom 11:30am – 11pm</div>
+        </div>
+        <div class="info-block">
+          <label>💀 Dolor Principal</label>
+          <div class="value">"Servicio tardó mucho" — solo teléfono fijo</div>
+        </div>
+        <div class="info-block">
+          <label>🎯 Estrategia</label>
+          <div class="value">Llamada fija + visita presencial con demo</div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a class="btn btn-wa" href="tel:+576053571992" style="background:#1470ff">
+          ☎️ Llamar Ahora
+        </a>
+        <button class="btn btn-copy" onclick="copyMsg(this, 'msg3')">📋 Copiar Guión Llamada</button>
+        <button class="btn btn-copy" onclick="copyMsg(this, 'close3')">🔒 Copiar Mensaje Cierre</button>
+      </div>
+      <div class="msg-accordion">
+        <button class="msg-toggle" onclick="toggleMsg(this)">
+          Ver guión completo de conversación
+          <span class="chevron">▾</span>
+        </button>
+        <div class="msg-content">
+          <div class="msg-block">
+            <div class="msg-label">☎️ GUIÓN DE LLAMADA — APERTURA</div>
+            <div class="msg-text" id="msg3">"Buenos días/tardes, ¿me comunican con el encargado o dueño del restaurante? Muchas gracias.
+
+[Cuando atiende] Buenas [tardes], le llamo porque vi que La Terraza de la Casa tiene muy buenas reseñas en Google — casi 300 opiniones excelentes. Felicitaciones.
+
+Le llamo porque detecté que actualmente no tienen forma de que los clientes reserven mesa de forma automática, especialmente en las noches. Con solo un teléfono fijo, muchas reservas se pierden cuando el restaurante está lleno o nadie puede contestar.
+
+Trabajo con <em>I WORK GENESIS</em> — implementamos empleados digitales en WhatsApp que toman reservas 24/7 sin que usted haga nada.
+
+¿Tiene 5 minutos esta semana para que le muestre cómo funciona? Puedo ir hasta el restaurante a hacer la demo en vivo."</div>
+          </div>
+          <div class="msg-block">
+            <div class="msg-label">🔒 MENSAJE CIERRE — WhatsApp o presencial</div>
+            <div class="msg-text" id="close3">Le resumo lo que tiene <em>La Terraza de la Casa</em> desde el día 1:
+
+✅ WhatsApp activo 24/7 — los clientes ya no necesitan llamar al fijo
+✅ Reservas automáticas con confirmación y recordatorio
+✅ Menú digital siempre disponible para consultar antes de llegar
+✅ Atención nocturna sin personal adicional
+
+Cada noche que pasa sin el sistema, son mesas vacías que no tenían por qué estarlo.
+
+¿Arrancamos? Implementación en <em>48 horas</em>, sin complicaciones. 🚀</div>
+          </div>
+          <textarea class="notes-area" placeholder="📝 Notas: quién atendió la llamada, qué dijo, próxima acción..."></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /leads calientes -->
+
+  <!-- WARM LEADS -->
+  <div class="section-title" style="margin-top:36px">🟡 LEADS TIBIOS — ESTA SEMANA</div>
+  <div class="leads-grid">
+
+    <!-- LEAD 4: PALERMO -->
+    <div class="lead-card warm" id="card-4">
+      <div class="card-header">
+        <div class="card-left">
+          <div class="card-rank"># 04 · TIBIO</div>
+          <div class="card-name">Restaurante Palermo BAQ</div>
+          <div class="card-address">📍 Cra. 60 #68-01, Barranquilla · ⭐ 4.8 (1,302 reseñas)</div>
+          <div style="margin-top:10px">
+            <span class="pain-tag no-menu">❌ Sin reservas online</span>
+            <span class="pain-tag no-web">Solo Instagram</span>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="score-circle score-warm">8</div>
+          <div class="score-label">Dolor</div>
+          <div style="margin-top:8px">
+            <select class="status-pill status-new" onchange="updateStatus(this,4)" style="background:transparent;border:none;cursor:pointer;font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">
+              <option value="new">🔵 Nuevo</option>
+              <option value="contacted">🟡 Contactado</option>
+              <option value="replied">💬 Respondió</option>
+              <option value="closed">✅ Cerrado</option>
+              <option value="lost">❌ Perdido</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-block"><label>📱 WhatsApp</label><div class="value">+57 316 044 8951</div></div>
+        <div class="info-block"><label>📸 Instagram</label><div class="value">@restaurantepalermobaq</div></div>
+        <div class="info-block"><label>💀 Dolor</label><div class="value">"Se llenan rápido — necesitan reservas"</div></div>
+      </div>
+      <div class="card-actions">
+        <a class="btn btn-wa" href="https://wa.me/573160448951?text=Buenas%20tardes%20%F0%9F%91%8B%2C%20vi%20que%20Palermo%20BAQ%20tiene%20m%C3%A1s%20de%201%2C300%20rese%C3%B1as%20en%20Google%20y%20clientes%20que%20dicen%20que%20%22se%20llenan%20r%C3%A1pido%22.%20Eso%20es%20una%20se%C3%B1al%20de%20que%20necesitan%20un%20sistema%20de%20reservas%20autom%C3%A1tico.%20Trabajo%20con%20I%20WORK%20GENESIS%20%E2%80%94%20empleados%20digitales%20en%20WhatsApp%20que%20gestionan%20reservas%2024%2F7.%20%C2%BFLe%20cuento%20en%203%20minutos%3F%20%F0%9F%8E%AF" target="_blank">📲 Abrir WhatsApp</a>
+      </div>
+      <div class="msg-accordion">
+        <button class="msg-toggle" onclick="toggleMsg(this)">Ver guión <span class="chevron">▾</span></button>
+        <div class="msg-content">
+          <div class="msg-block">
+            <div class="msg-label">📩 APERTURA</div>
+            <div class="msg-text">Buenas tardes 👋, vi que <em>Palermo BAQ</em> tiene más de 1,300 reseñas y clientes que dicen que "se llenan rápido y necesitan reservar con anticipación".
+
+Eso es una oportunidad enorme que está dejando sobre la mesa.
+
+Con <em>I WORK GENESIS</em>, su agente digital toma reservas automáticamente por WhatsApp — incluso cuando el restaurante está cerrado. Sin perder una sola mesa.
+
+¿Le muestro cómo funciona en 3 minutos? 🎯</div>
+          </div>
+          <textarea class="notes-area" placeholder="📝 Notas..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEAD 5: L'EDEN -->
+    <div class="lead-card warm" id="card-5">
+      <div class="card-header">
+        <div class="card-left">
+          <div class="card-rank"># 05 · TIBIO</div>
+          <div class="card-name">L'eden GastroBar</div>
+          <div class="card-address">📍 Cra. 56 #74-146, Nte. Centro Histórico · ⭐ 4.4 (171 reseñas)</div>
+          <div style="margin-top:10px">
+            <span class="pain-tag no-web">Web sin reservas</span>
+            <span class="pain-tag no-menu">⚠️ Personal sin conocimiento del menú</span>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="score-circle score-warm">7</div>
+          <div class="score-label">Dolor</div>
+          <div style="margin-top:8px">
+            <select class="status-pill status-new" onchange="updateStatus(this,5)" style="background:transparent;border:none;cursor:pointer;font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">
+              <option value="new">🔵 Nuevo</option>
+              <option value="contacted">🟡 Contactado</option>
+              <option value="replied">💬 Respondió</option>
+              <option value="closed">✅ Cerrado</option>
+              <option value="lost">❌ Perdido</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-block"><label>📱 WhatsApp</label><div class="value">+57 300 623 1281</div></div>
+        <div class="info-block"><label>🌐 Web</label><div class="value">leden.com.co (sin reservas)</div></div>
+        <div class="info-block"><label>💀 Dolor</label><div class="value">Personal no conoce el menú — clientes se van sin info</div></div>
+      </div>
+      <div class="card-actions">
+        <a class="btn btn-wa" href="https://wa.me/573006231281?text=Buenas%20tardes%20%F0%9F%91%8B%2C%20vi%20varias%20rese%C3%B1as%20de%20L%27eden%20GastroBar%20donde%20los%20clientes%20mencionan%20que%20el%20personal%20no%20siempre%20conoce%20bien%20el%20men%C3%BA.%20Con%20un%20agente%20digital%20entrenado%20en%20su%20carta%20completa%2C%20los%20clientes%20llegan%20sabiendo%20exactamente%20qu%C3%A9%20van%20a%20pedir.%20Trabajo%20con%20I%20WORK%20GENESIS.%20%C2%BFLe%20cuento%20en%203%20minutos%3F%20%F0%9F%8E%AF" target="_blank">📲 Abrir WhatsApp</a>
+      </div>
+      <div class="msg-accordion">
+        <button class="msg-toggle" onclick="toggleMsg(this)">Ver guión <span class="chevron">▾</span></button>
+        <div class="msg-content">
+          <div class="msg-block">
+            <div class="msg-label">📩 APERTURA</div>
+            <div class="msg-text">Buenas tardes 👋, vi varias reseñas de <em>L'eden GastroBar</em> donde los clientes mencionan que el personal no siempre conoce bien el menú.
+
+Un agente digital entrenado en su carta completa resuelve exactamente eso — <em>antes de que el cliente llegue</em>. Llega sabiendo qué va a pedir, qué hay disponible y a qué precio.
+
+Con <em>I WORK GENESIS</em>, su agente digital atiende en WhatsApp 24/7, explica cada plato, toma reservas y confirma la visita.
+
+¿Le muestro cómo funciona? 🎯</div>
+          </div>
+          <textarea class="notes-area" placeholder="📝 Notas..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEAD 6: CASA TUA -->
+    <div class="lead-card warm" id="card-6">
+      <div class="card-header">
+        <div class="card-left">
+          <div class="card-rank"># 06 · TIBIO</div>
+          <div class="card-name">Casa Tua Restaurante Bar</div>
+          <div class="card-address">📍 Cra. 54 #75-78, Nte. Centro Histórico · ⭐ 4.6 (176 reseñas)</div>
+          <div style="margin-top:10px">
+            <span class="pain-tag no-web">Web sin teléfono</span>
+            <span class="pain-tag no-res">❌ Sin reservas automáticas</span>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="score-circle score-warm">7</div>
+          <div class="score-label">Dolor</div>
+          <div style="margin-top:8px">
+            <select class="status-pill status-new" onchange="updateStatus(this,6)" style="background:transparent;border:none;cursor:pointer;font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">
+              <option value="new">🔵 Nuevo</option>
+              <option value="contacted">🟡 Contactado</option>
+              <option value="replied">💬 Respondió</option>
+              <option value="closed">✅ Cerrado</option>
+              <option value="lost">❌ Perdido</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-block"><label>📱 WhatsApp</label><div class="value na">⚠️ Visita web: casatuacocina.com</div></div>
+        <div class="info-block"><label>🌐 Web</label><div class="value">casatuacocina.com</div></div>
+        <div class="info-block"><label>💀 Dolor</label><div class="value">Sin teléfono en Google. Clientes reportan 40min de espera.</div></div>
+      </div>
+      <div class="card-actions">
+        <a class="btn btn-wa" href="https://casatuacocina.com/inicio" target="_blank" style="background:#1470ff">🌐 Ir a su web</a>
+        <button class="btn btn-copy" onclick="copyMsg(this, 'msg6')">📋 Copiar Mensaje Web/Visita</button>
+      </div>
+      <div class="msg-accordion">
+        <button class="msg-toggle" onclick="toggleMsg(this)">Ver guión <span class="chevron">▾</span></button>
+        <div class="msg-content">
+          <div class="msg-block">
+            <div class="msg-label">📩 MENSAJE — CONTACTO WEB O VISITA DIRECTA</div>
+            <div class="msg-text" id="msg6">Buenas tardes, les escribo porque vi que <em>Casa Tua</em> tiene muy buenas reseñas pero los clientes reportan algunos problemas de espera y atención.
+
+Un agente digital de <em>I WORK GENESIS</em> puede manejar las reservas automáticamente, enviar el menú por WhatsApp antes de que lleguen y reducir los tiempos de espera — sin cambiar su operación actual.
+
+¿Podemos hablar 5 minutos esta semana? 🎯</div>
+          </div>
+          <textarea class="notes-area" placeholder="📝 Notas de visita o contacto web..."></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /leads tibios -->
+</div><!-- /main -->
+
+<div class="crm-footer">
+  I WORK GENESIS · CRM RESTAURANTES BARRANQUILLA · GENERADO FEB 2026 · SOLO USO INTERNO
+</div>
+
+<script>
+function toggleMsg(btn) {
+  const content = btn.nextElementSibling;
+  btn.classList.toggle('open');
+  content.classList.toggle('open');
+}
+
+function copyMsg(btn, id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✅ Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function updateStatus(sel, cardId) {
+  const card = document.getElementById('card-' + cardId);
+  // Update counter
+  const counts = { new:0, contacted:0, replied:0, closed:0, lost:0 };
+  document.querySelectorAll('select').forEach(s => {
+    if(counts[s.value] !== undefined) counts[s.value]++;
+  });
+  // Update closed stat
+  const closedEl = document.querySelector('.stats-row .stat-card:last-child .stat-num');
+  if(closedEl) closedEl.textContent = counts.closed;
+}
+</script>
+</body>
+</html>
 
