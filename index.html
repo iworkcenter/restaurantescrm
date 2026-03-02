@@ -315,6 +315,101 @@ body {
   font-family: 'DM Mono', monospace;
   letter-spacing: 1px;
 }
+
+/* ── FLYER BUTTON ── */
+.btn-flyer {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: #fff;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+.btn-flyer::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -60%;
+  width: 40%; height: 200%;
+  background: rgba(255,255,255,0.15);
+  transform: skewX(-20deg);
+  transition: left .4s;
+}
+.btn-flyer:hover::after { left: 120%; }
+
+/* ── FLYER MODAL ── */
+.flyer-modal-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.flyer-modal-bg.open { display: flex; }
+.flyer-modal {
+  background: #0b1128;
+  border: 1px solid #1a2540;
+  border-radius: 18px;
+  padding: 28px;
+  max-width: 560px;
+  width: 100%;
+  position: relative;
+}
+.flyer-modal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+.flyer-modal-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.flyer-preview-wrap {
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  border: 1px solid #1a2540;
+}
+#flyerCanvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.flyer-actions {
+  display: flex;
+  gap: 10px;
+}
+.btn-download {
+  background: var(--green);
+  color: #000;
+  font-weight: 700;
+}
+.btn-close-modal {
+  background: var(--border);
+  color: var(--muted);
+}
+.generating-badge {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #a78bfa;
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 12px;
+}
+.generating-badge.show { display: flex; }
+.spin {
+  width: 16px; height: 16px;
+  border: 2px solid #a78bfa;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -419,8 +514,9 @@ body {
         <a class="btn btn-wa" href="https://wa.me/573174374189?text=Buenas%20tardes%20%F0%9F%91%8B%2C%20vi%20que%20Los%20Helechos%20tiene%20m%C3%A1s%20de%201%2C500%20rese%C3%B1as%20positivas%20en%20Google%20%E2%80%94%20eso%20es%20incre%C3%ADble.%20Le%20escribo%20porque%20detect%C3%A9%20que%20actualmente%20no%20tienen%20sistema%20para%20reservar%20mesa%20de%20forma%20autom%C3%A1tica%20ni%20men%C3%BA%20digital%20en%20WhatsApp.%20%C2%BFSabe%20cu%C3%A1ntas%20reservas%20pierde%20cada%20noche%20cuando%20nadie%20puede%20contactarlos%20despu%C3%A9s%20de%20las%208pm%3F%20Trabajo%20con%20I%20WORK%20GENESIS%20%E2%80%94%20empleados%20digitales%20que%20atienden%20a%20sus%20clientes%2024%2F7%20por%20WhatsApp%3A%20muestran%20el%20men%C3%BA%2C%20reservan%20mesas%20y%20confirman%20la%20cita.%20Sin%20contratar%20a%20nadie.%20%C2%BFLe%20puedo%20mostrar%20en%203%20minutos%20c%C3%B3mo%20funciona%3F%20%F0%9F%8E%AF" target="_blank">
           📲 Abrir WhatsApp
         </a>
-        <button class="btn btn-copy" onclick="copyMsg(this, 'msg1')">📋 Copiar Mensaje Apertura</button>
-        <button class="btn btn-copy" onclick="copyMsg(this, 'close1')">🔒 Copiar Mensaje Cierre</button>
+        <button class="btn btn-copy" onclick="copyMsg(this, 'msg1')">📋 Copiar Apertura</button>
+        <button class="btn btn-copy" onclick="copyMsg(this, 'close1')">🔒 Copiar Cierre</button>
+        <button class="btn btn-flyer" onclick="openFlyer({name:'Los Helechos',score:10,rating:'4.6',reviews:'1,552',pain1:'Sin sitio web activo',pain2:'Sin menú digital',pain3:'Sin reservas 24/7',sector:'Riomar, Barranquilla'})">🎨 Generar Flyer IA</button>
       </div>
 
       <div class="msg-accordion">
@@ -524,8 +620,9 @@ El valor de implementación es menor a lo que pierde en <em>una sola noche</em> 
         <a class="btn btn-wa" href="https://wa.me/573155067777?text=Buenas%20tardes%20%F0%9F%91%8B%2C%20vi%20que%20El%20Venado%20de%20Oro%20tiene%20casi%20600%20rese%C3%B1as%20positivas%20en%20Google%20%E2%80%94%20excelente%20reputaci%C3%B3n.%20Le%20escribo%20porque%20detect%C3%A9%20que%20actualmente%20no%20tienen%20sistema%20para%20reservar%20mesa%20de%20forma%20autom%C3%A1tica%20ni%20men%C3%BA%20digital.%20Con%20I%20WORK%20GENESIS%2C%20su%20restaurante%20podr%C3%ADa%20ser%20el%20primero%20en%20la%20zona%20sur%20con%20un%20empleado%20digital%20que%20atiende%2024%2F7.%20%C2%BFLe%20muestro%20c%C3%B3mo%20funciona%20en%203%20minutos%3F%20%F0%9F%8E%AF" target="_blank">
           📲 Abrir WhatsApp
         </a>
-        <button class="btn btn-copy" onclick="copyMsg(this, 'msg2')">📋 Copiar Mensaje Apertura</button>
-        <button class="btn btn-copy" onclick="copyMsg(this, 'close2')">🔒 Copiar Mensaje Cierre</button>
+        <button class="btn btn-copy" onclick="copyMsg(this, 'msg2')">📋 Copiar Apertura</button>
+        <button class="btn btn-copy" onclick="copyMsg(this, 'close2')">🔒 Copiar Cierre</button>
+        <button class="btn btn-flyer" onclick="openFlyer({name:'El Venado de Oro',score:10,rating:'4.6',reviews:'597',pain1:'Sin sitio web activo',pain2:'Sin menú digital',pain3:'Zona sur sin digitalizar',sector:'Sur Oriente, Barranquilla'})">🎨 Generar Flyer IA</button>
       </div>
       <div class="msg-accordion">
         <button class="msg-toggle" onclick="toggleMsg(this)">
@@ -620,8 +717,9 @@ Su competencia aún no tiene esto. <em>El que llegue primero se queda con los cl
         <a class="btn btn-wa" href="tel:+576053571992" style="background:#1470ff">
           ☎️ Llamar Ahora
         </a>
-        <button class="btn btn-copy" onclick="copyMsg(this, 'msg3')">📋 Copiar Guión Llamada</button>
-        <button class="btn btn-copy" onclick="copyMsg(this, 'close3')">🔒 Copiar Mensaje Cierre</button>
+        <button class="btn btn-copy" onclick="copyMsg(this, 'msg3')">📋 Copiar Guión</button>
+        <button class="btn btn-copy" onclick="copyMsg(this, 'close3')">🔒 Copiar Cierre</button>
+        <button class="btn btn-flyer" onclick="openFlyer({name:'La Terraza de la Casa',score:9,rating:'4.5',reviews:'294',pain1:'Solo teléfono fijo',pain2:'Sin reservas nocturnas',pain3:'Sin canal digital',sector:'Riomar, Barranquilla'})">🎨 Generar Flyer IA</button>
       </div>
       <div class="msg-accordion">
         <button class="msg-toggle" onclick="toggleMsg(this)">
@@ -698,6 +796,7 @@ Cada noche que pasa sin el sistema, son mesas vacías que no tenían por qué es
       </div>
       <div class="card-actions">
         <a class="btn btn-wa" href="https://wa.me/573160448951?text=Buenas%20tardes%20%F0%9F%91%8B%2C%20vi%20que%20Palermo%20BAQ%20tiene%20m%C3%A1s%20de%201%2C300%20rese%C3%B1as%20en%20Google%20y%20clientes%20que%20dicen%20que%20%22se%20llenan%20r%C3%A1pido%22.%20Eso%20es%20una%20se%C3%B1al%20de%20que%20necesitan%20un%20sistema%20de%20reservas%20autom%C3%A1tico.%20Trabajo%20con%20I%20WORK%20GENESIS%20%E2%80%94%20empleados%20digitales%20en%20WhatsApp%20que%20gestionan%20reservas%2024%2F7.%20%C2%BFLe%20cuento%20en%203%20minutos%3F%20%F0%9F%8E%AF" target="_blank">📲 Abrir WhatsApp</a>
+        <button class="btn btn-flyer" onclick="openFlyer({name:'Palermo BAQ',score:8,rating:'4.8',reviews:'1,302',pain1:'Sin reservas online',pain2:'Solo Instagram activo',pain3:'Grupos sin poder planificar',sector:'Barranquilla'})">🎨 Generar Flyer IA</button>
       </div>
       <div class="msg-accordion">
         <button class="msg-toggle" onclick="toggleMsg(this)">Ver guión <span class="chevron">▾</span></button>
@@ -750,6 +849,7 @@ Con <em>I WORK GENESIS</em>, su agente digital toma reservas automáticamente po
       </div>
       <div class="card-actions">
         <a class="btn btn-wa" href="https://wa.me/573006231281?text=Buenas%20tardes%20%F0%9F%91%8B%2C%20vi%20varias%20rese%C3%B1as%20de%20L%27eden%20GastroBar%20donde%20los%20clientes%20mencionan%20que%20el%20personal%20no%20siempre%20conoce%20bien%20el%20men%C3%BA.%20Con%20un%20agente%20digital%20entrenado%20en%20su%20carta%20completa%2C%20los%20clientes%20llegan%20sabiendo%20exactamente%20qu%C3%A9%20van%20a%20pedir.%20Trabajo%20con%20I%20WORK%20GENESIS.%20%C2%BFLe%20cuento%20en%203%20minutos%3F%20%F0%9F%8E%AF" target="_blank">📲 Abrir WhatsApp</a>
+        <button class="btn btn-flyer" onclick="openFlyer({name:'L\'eden GastroBar',score:7,rating:'4.4',reviews:'171',pain1:'Web sin sistema reservas',pain2:'Personal sin dominar el menú',pain3:'Sin atención digital 24/7',sector:'Nte. Centro Histórico, Baq'})">🎨 Generar Flyer IA</button>
       </div>
       <div class="msg-accordion">
         <button class="msg-toggle" onclick="toggleMsg(this)">Ver guión <span class="chevron">▾</span></button>
@@ -803,6 +903,7 @@ Con <em>I WORK GENESIS</em>, su agente digital atiende en WhatsApp 24/7, explica
       <div class="card-actions">
         <a class="btn btn-wa" href="https://casatuacocina.com/inicio" target="_blank" style="background:#1470ff">🌐 Ir a su web</a>
         <button class="btn btn-copy" onclick="copyMsg(this, 'msg6')">📋 Copiar Mensaje Web/Visita</button>
+        <button class="btn btn-flyer" onclick="openFlyer({name:'Casa Tua',score:7,rating:'4.6',reviews:'176',pain1:'Sin teléfono visible',pain2:'Esperas de 40 min sin gestión',pain3:'Sin reservas digitales',sector:'Nte. Centro Histórico, Baq'})">🎨 Generar Flyer IA</button>
       </div>
       <div class="msg-accordion">
         <button class="msg-toggle" onclick="toggleMsg(this)">Ver guión <span class="chevron">▾</span></button>
@@ -827,6 +928,27 @@ Un agente digital de <em>I WORK GENESIS</em> puede manejar las reservas automát
   I WORK GENESIS · CRM RESTAURANTES BARRANQUILLA · GENERADO FEB 2026 · SOLO USO INTERNO
 </div>
 
+
+<!-- FLYER MODAL -->
+<div class="flyer-modal-bg" id="flyerModalBg">
+  <div class="flyer-modal">
+    <div class="flyer-modal-title">🎨 FLYER IA GENERADO</div>
+    <div class="flyer-modal-sub" id="flyerModalSub">Personalizado para este restaurante</div>
+    <div class="generating-badge" id="genBadge">
+      <div class="spin"></div>
+      Generando flyer con IA...
+    </div>
+    <div class="flyer-preview-wrap">
+      <canvas id="flyerCanvas" width="1080" height="1080"></canvas>
+    </div>
+    <div class="flyer-actions">
+      <button class="btn btn-download" onclick="downloadFlyer()">⬇️ Descargar PNG</button>
+      <button class="btn btn-copy" onclick="copyFlyerLink()" id="copyLinkBtn">🔗 Copiar enlace landing</button>
+      <button class="btn btn-close-modal" onclick="closeFlyer()">✕ Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 function toggleMsg(btn) {
   const content = btn.nextElementSibling;
@@ -846,17 +968,255 @@ function copyMsg(btn, id) {
 }
 
 function updateStatus(sel, cardId) {
-  const card = document.getElementById('card-' + cardId);
-  // Update counter
   const counts = { new:0, contacted:0, replied:0, closed:0, lost:0 };
   document.querySelectorAll('select').forEach(s => {
     if(counts[s.value] !== undefined) counts[s.value]++;
   });
-  // Update closed stat
   const closedEl = document.querySelector('.stats-row .stat-card:last-child .stat-num');
   if(closedEl) closedEl.textContent = counts.closed;
 }
+
+// ── FLYER ENGINE ──────────────────────────────────────────────
+let currentLead = null;
+
+function openFlyer(lead) {
+  currentLead = lead;
+  document.getElementById('flyerModalBg').classList.add('open');
+  document.getElementById('flyerModalSub').textContent = 'Flyer personalizado para: ' + lead.name;
+  document.getElementById('genBadge').classList.add('show');
+  setTimeout(() => {
+    drawFlyer(lead);
+    document.getElementById('genBadge').classList.remove('show');
+  }, 1200);
+}
+
+function closeFlyer() {
+  document.getElementById('flyerModalBg').classList.remove('open');
+}
+
+function downloadFlyer() {
+  const canvas = document.getElementById('flyerCanvas');
+  const link = document.createElement('a');
+  link.download = 'flyer-' + (currentLead ? currentLead.name.replace(/\s+/g,'-').toLowerCase() : 'lead') + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+function copyFlyerLink() {
+  navigator.clipboard.writeText('https://iworkcenter.github.io/empleadosdigitales/');
+  const btn = document.getElementById('copyLinkBtn');
+  btn.textContent = '✅ Link copiado!';
+  setTimeout(() => btn.textContent = '🔗 Copiar enlace landing', 2000);
+}
+
+function drawFlyer(lead) {
+  const canvas = document.getElementById('flyerCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = 1080, H = 1080;
+
+  // ── BACKGROUND gradient dark
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, '#04060f');
+  bg.addColorStop(0.5, '#080c1a');
+  bg.addColorStop(1, '#06040a');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // ── BOKEH warm circles
+  const bokeh = [[820,200,260],[180,380,180],[900,700,220],[120,800,160],[600,950,200]];
+  bokeh.forEach(([cx,cy,r]) => {
+    const g = ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+    g.addColorStop(0, 'rgba(200,90,10,0.18)');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.fill();
+  });
+
+  // ── DARK VIGNETTE
+  const vig = ctx.createRadialGradient(W/2, H/2, 200, W/2, H/2, 780);
+  vig.addColorStop(0, 'rgba(0,0,0,0)');
+  vig.addColorStop(1, 'rgba(0,0,0,0.7)');
+  ctx.fillStyle = vig;
+  ctx.fillRect(0, 0, W, H);
+
+  // ── GRID LINES (subtle tech)
+  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  ctx.lineWidth = 1;
+  for(let x=0; x<W; x+=60) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for(let y=0; y<H; y+=60) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+  // ── TOP BADGE
+  ctx.strokeStyle = 'rgba(212,158,20,0.6)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, 60, 55, 380, 38, 4);
+  ctx.stroke();
+  ctx.fillStyle = 'rgba(212,158,20,0.8)';
+  ctx.font = '500 16px monospace';
+  ctx.fillText('EMPLEADO DIGITAL  ·  I WORK GENESIS  ·  IA', 76, 79);
+
+  // ── GOLD ACCENT LINE
+  ctx.fillStyle = '#d49e14';
+  ctx.fillRect(60, 118, 520, 4);
+  ctx.fillStyle = '#ffd43b';
+  ctx.fillRect(60, 118, 160, 4);
+
+  // ── PERSONALIZED HEADLINE
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 76px sans-serif';
+  ctx.fillText(lead.name.toUpperCase(), 60, 200);
+
+  // Underline restaurant name
+  ctx.fillStyle = 'rgba(212,158,20,0.4)';
+  const nw = ctx.measureText(lead.name.toUpperCase()).width;
+  ctx.fillRect(60, 212, Math.min(nw, W-80), 3);
+
+  // ── SECTOR
+  ctx.fillStyle = 'rgba(160,140,90,0.9)';
+  ctx.font = '500 22px sans-serif';
+  ctx.fillText('📍 ' + lead.sector, 60, 258);
+
+  // ── HERO PAIN TEXT
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 98px sans-serif';
+  ctx.fillText('TU NEGOCIO', 60, 380);
+
+  ctx.fillStyle = '#d49e14';
+  ctx.font = 'bold 98px sans-serif';
+  ctx.fillText('NO DESCANSA.', 60, 475);
+
+  ctx.fillStyle = 'rgba(240,220,180,0.95)';
+  ctx.font = '500 34px sans-serif';
+  ctx.fillText('VENDE · RESERVA · ATIENDE  24/7', 60, 535);
+
+  // ── DIVIDER
+  ctx.fillStyle = 'rgba(50,35,10,1)';
+  ctx.fillRect(60, 558, W-120, 2);
+
+  // ── PAIN CARDS (3)
+  const pains = [lead.pain1, lead.pain2, lead.pain3];
+  pains.forEach((pain, i) => {
+    const x = 60 + i * 330;
+    const y = 578;
+    // Card
+    ctx.fillStyle = 'rgba(18,8,3,0.9)';
+    roundRect(ctx, x, y, 310, 90, 8);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(100,25,25,0.8)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, x, y, 310, 90, 8);
+    ctx.stroke();
+    // Red left bar
+    ctx.fillStyle = '#cc3220';
+    ctx.fillRect(x, y+12, 3, 66);
+    // Pain text
+    ctx.fillStyle = '#cc3220';
+    ctx.font = 'bold 16px monospace';
+    ctx.fillText('❌ DOLOR DETECTADO', x+14, y+30);
+    ctx.fillStyle = 'rgba(220,190,150,0.9)';
+    ctx.font = '500 17px sans-serif';
+    wrapText(ctx, pain, x+14, y+58, 282, 22);
+  });
+
+  // ── STATS ROW
+  const stats = [['⭐ ' + lead.rating, 'Rating Google'], [lead.reviews, 'Reseñas reales'], ['48H', 'Implementación']];
+  stats.forEach(([num, lbl], i) => {
+    const x = 60 + i * 330;
+    const y = 690;
+    ctx.fillStyle = 'rgba(12,8,2,0.8)';
+    roundRect(ctx, x, y, 310, 100, 8);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(212,158,20,0.25)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, x, y, 310, 100, 8);
+    ctx.stroke();
+    ctx.fillStyle = '#d49e14';
+    ctx.font = 'bold 42px monospace';
+    ctx.fillText(num, x+18, y+58);
+    ctx.fillStyle = 'rgba(160,135,80,0.9)';
+    ctx.font = '400 18px sans-serif';
+    ctx.fillText(lbl, x+18, y+82);
+  });
+
+  // ── SOLUTION SECTION
+  ctx.fillStyle = '#d49e14';
+  ctx.fillRect(60, 810, W-120, 3);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 26px sans-serif';
+  ctx.fillText('CON I WORK GENESIS ESTO CAMBIA EN 48 HORAS:', 60, 848);
+
+  const sols = ['✅  Agente WhatsApp 24/7 — reservas mientras duermes', '✅  Menú digital interactivo actualizable al instante', '✅  Nunca más una mesa vacía por falta de respuesta'];
+  sols.forEach((s, i) => {
+    ctx.fillStyle = 'rgba(220,195,145,0.95)';
+    ctx.font = '400 21px sans-serif';
+    ctx.fillText(s, 60, 888 + i*34);
+  });
+
+  // ── CTA BOX
+  const ctaGrad = ctx.createLinearGradient(60, 985, W-60, 1050);
+  ctaGrad.addColorStop(0, '#c87b08');
+  ctaGrad.addColorStop(1, '#a06010');
+  ctx.fillStyle = ctaGrad;
+  roundRect(ctx, 60, 980, W-120, 70, 12);
+  ctx.fill();
+  // shine
+  ctx.fillStyle = 'rgba(255,220,100,0.18)';
+  roundRect(ctx, 60, 980, W-120, 22, 12);
+  ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 36px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('ACTIVA TU EMPLEADO DIGITAL HOY — 48 HORAS', W/2, 1024);
+  ctx.textAlign = 'left';
+
+  // ── FOOTER
+  ctx.fillStyle = 'rgba(6,4,1,1)';
+  ctx.fillRect(0, 1060, W, H-1060);
+  ctx.fillStyle = '#d49e14';
+  ctx.font = 'bold 32px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('I WORK GENESIS  ·  iworkcenter.github.io/empleadosdigitales', W/2, 1076);
+  ctx.fillStyle = 'rgba(90,65,20,0.9)';
+  ctx.font = '400 15px monospace';
+  ctx.fillText('EMPLEADOS DIGITALES PARA RESTAURANTES  ·  BARRANQUILLA, COLOMBIA', W/2, 1070);
+  ctx.textAlign = 'left';
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+}
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(' ');
+  let line = '';
+  for(let n=0; n<words.length; n++) {
+    const testLine = line + words[n] + ' ';
+    if(ctx.measureText(testLine).width > maxWidth && n > 0) {
+      ctx.fillText(line, x, y);
+      line = words[n] + ' ';
+      y += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, x, y);
+}
+
+// Close modal on background click
+document.getElementById('flyerModalBg').addEventListener('click', function(e) {
+  if(e.target === this) closeFlyer();
+});
 </script>
 </body>
 </html>
-
